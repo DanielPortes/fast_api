@@ -19,3 +19,9 @@ class UserPublic(UserSchema):
     email: EmailStr
 
 
+class UserDB(UserSchema):
+    id: int
+
+
+class UserList(BaseModel):
+    users: list[UserPublic] = []
