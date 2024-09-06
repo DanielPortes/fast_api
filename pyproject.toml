@@ -18,13 +18,20 @@ pytest = "^8.3.2"
 pytest-cov = "^5.0.0"
 taskipy = "^1.13.0"
 
+[tool.ruff.format]
+preview = true
+quote-style = 'single'
+
+[pytest]
+plugins = ["pytest_fastapi"]
+
 [tool.taskipy.tasks]
+lint = 'ruff check . && ruff check . --diff'
+format = 'ruff check . --fix && ruff format .'
 run = 'fastapi dev fast_api/app.py'
 pre_test = 'task lint'
-test = 'pytest -s -x --conv=fast_api -vv'
+test = 'pytest -s -x -vv'
 post_test = 'coverage html'
-lint = 'ruff check . && ruff check . --dfix'
-format = 'ruff check . --fix && ruff format .'
 
 [build-system]
 requires = ["poetry-core"]
