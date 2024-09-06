@@ -10,10 +10,8 @@ class UserSchema(BaseModel):
     email: EmailStr
     password: str
 
-class UserInDB(UserSchema):
-    id: int
 
-class UserPublic(UserSchema):
+class UserPublic(BaseModel):
     id: int
     username: str
     email: EmailStr
