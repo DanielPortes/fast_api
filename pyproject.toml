@@ -8,6 +8,8 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "3.12.*"
 fastapi = "^0.112.2"
+pydantic-settings = "^2.4.0"
+alembic = "^1.13.2"
 
 [tool.pytest.ini_options]
 pythonpath = "."
