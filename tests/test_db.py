@@ -1,15 +1,12 @@
-from fast_api.models import User, mapper_registry
-from sqlalchemy import create_engine
-from sqlalchemy.orm import Session
+from fast_api.models import User
+from sqlalchemy import select
 
 
-def test_create_user():
-    engine = create_engine('sqlite:///:memory:')
-    mapper_registry.metadata.create_all(engine)
+def test_create_user(session):
+    user = User(username='test', email='teste@teste.com', password='123456')
+    session.add(user)
+    session.commit()
 
-    with Session(engine) as session:
-        user = User(username='test', email='teste@teste.com', password='123456')
-        session.add(user)
-        session.commit()
+    result = session.scalar(select(User).where(User.email == 'teste@teste.com'))
 
-    assert user.username == 'test'
+    assert result.username == 'test'
