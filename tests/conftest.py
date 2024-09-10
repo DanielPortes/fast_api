@@ -35,3 +35,18 @@ def session():
         yield session
 
     mapper_registry.metadata.drop_all(engine)
+
+
+@pytest.fixture
+def user(session):
+    pwd = 'testtest'
+    user = User(
+        username='Teste', email='teste@test.com', password=get_password_hash(pwd)
+    )
+
+    session.add(user)
+    session.commit()
+    session.refresh(user)
+
+    user.clean_password = pwd  # monkey patching
+    return user
