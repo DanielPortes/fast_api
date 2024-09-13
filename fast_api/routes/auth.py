@@ -22,13 +22,13 @@ router = APIRouter(
 
 T_OAuth2Form = Annotated[OAuth2PasswordRequestForm, Depends()]
 T_Session = Annotated[Session, Depends(get_session)]
-T_User = Annotated[User, Depends(get_current_user)]
+T_CurrentUser = Annotated[User, Depends(get_current_user)]
 
 
 @router.post('/token', response_model=Token)
 def login_for_access_token(
-    form_data: T_OAuth2Form,
-    session: T_Session,
+        form_data: T_OAuth2Form,
+        session: T_Session,
 ):
     user = session.scalar(select(User).where(User.email == form_data.username))
 
@@ -41,3 +41,9 @@ def login_for_access_token(
     return {'access_token': access_token, 'token_type': 'Bearer'}
 
 
+@router.post('/refresh_token', response_model=Token)
+def refresh_access_token(
+        user: T_CurrentUser,
+):
+    new_access_token = create_access_token(data={'sub': user.email})
+    return {'access_token': new_access_token, 'token_type': 'Bearer'}

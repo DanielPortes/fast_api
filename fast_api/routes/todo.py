@@ -16,9 +16,9 @@ T_CurrentUser = Annotated[User, Depends(get_current_user)]
 
 @router.post('/', response_model=TodoPublic)
 def create_todo(
-        todo: TodoSchema,
-        user: T_CurrentUser,
-        session: T_Session,
+    todo: TodoSchema,
+    user: T_CurrentUser,
+    session: T_Session,
 ):
     db_Todo = Todo(
         title=todo.title,
@@ -36,13 +36,13 @@ def create_todo(
 
 @router.get('/', response_model=TodoList)
 def list_todos(  # noqa
-        session: T_Session,
-        user: T_CurrentUser,
-        title: str = Query(None),
-        description: str = Query(None),
-        state: str = Query(None),
-        offset: int = Query(None),
-        limit: int = Query(None),
+    session: T_Session,
+    user: T_CurrentUser,
+    title: str = Query(None),
+    description: str = Query(None),
+    state: str = Query(None),
+    offset: int = Query(None),
+    limit: int = Query(None),
 ):
     query = select(Todo).where(Todo.user_id == user.id)
 
@@ -62,10 +62,10 @@ def list_todos(  # noqa
 
 @router.patch('/{todo_id}', response_model=TodoPublic)
 def patch_todo(
-        todo_id: int,
-        session: T_Session,
-        user: T_CurrentUser,
-        todo: TodoUpdate,
+    todo_id: int,
+    session: T_Session,
+    user: T_CurrentUser,
+    todo: TodoUpdate,
 ):
     db_todo = session.scalar(
         select(Todo).where(Todo.id == todo_id, Todo.user_id == user.id)
@@ -86,9 +86,9 @@ def patch_todo(
 
 @router.delete('/{todo_id}', response_model=Message)
 def delete_todo(
-        todo_id: int,
-        session: T_Session,
-        user: T_CurrentUser,
+    todo_id: int,
+    session: T_Session,
+    user: T_CurrentUser,
 ):
     db_todo = session.scalar(
         select(Todo).where(Todo.id == todo_id, Todo.user_id == user.id)
@@ -101,4 +101,3 @@ def delete_todo(
     session.commit()
 
     return {'message': 'Task deleted'}
-
