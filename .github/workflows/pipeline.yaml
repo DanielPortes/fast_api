@@ -12,8 +12,6 @@ jobs:
       ACCESS_TOKEN_EXPIRE_MINUTES: ${{ secrets.ACCESS_TOKEN_EXPIRE_MINUTES }}
 
     steps:
-      - name: Clear Cache
-      - run: rm -rf ${{ github.workspace }}/*
 
       - name: Checkout
         uses: actions/checkout@v4
